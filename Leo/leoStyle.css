@@ -1,0 +1,104 @@
+canvas {
+    border: 1px solid black;
+}
+
+img {
+    width: 1100px;
+    opacity: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.canvasContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.color-picker-main {
+    width: 25px;
+    height: 25px;
+    background-color: grey;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    position: fixed;
+    top: 95%;
+    left: 95%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.color-option.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.canvasContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.color-picker-main {
+    width: 25px;
+    height: 25px;
+    background-color: grey;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    position: fixed;
+    top: 95%;
+    left: 95%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Hidden color options (circles) */
+.color-option {
+    position: fixed; /* Change to fixed so options are placed correctly relative to viewport */
+    left: 95%; /* Matches the main button's left position */
+    top: 89%;  /* Adjust top for the first color option */
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+:root {
+    --colorSpacing: 83%;
+  }
+  
+.color-option:nth-child(2) {
+    top: var(--colorSpacing); /* Move the second color option higher */
+}
+
+.color-option:nth-child(3) {
+    top: calc(var(--colorSpacing) - 6%); /* Move the third color option even higher */
+}
+
+.color-option:nth-child(4) {
+    top: calc(var(--colorSpacing) - 12%); /* Move the third color option even higher */
+}
+
+.color-option:nth-child(5) {
+    top: calc(var(--colorSpacing) - 18%); /* Move the third color option even higher */
+}
+
+.color-option:nth-child(6) {
+    top: calc(var(--colorSpacing) - 24%); /* Move the third color option even higher */
+}
+
+.color-option:nth-child(7) {
+    top: calc(var(--colorSpacing) - 30%); /* Move the third color option even higher */
+}
+.color-option.active {
+    opacity: 1;
+    transform: scale(1);
+}
