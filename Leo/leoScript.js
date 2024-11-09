@@ -1,21 +1,50 @@
-const colorPickerMain = document.querySelector('.color-picker-main');
-const colorOptions = document.querySelectorAll('.color-option');
-
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
-let selectedColor = 'rgba(128, 128, 128, 0.5)';  // Default color
-let isExpanded = false;  // Tracks whether the color options are visible
+const colorPickerMain = document.querySelector('.color-picker-main');
+const colorOptions = document.querySelectorAll('.color-option');
+const style = document.createElement('style');
 
 const popUp = document.getElementById('popUpBt');
 const saveButton = document.getElementById('saveButton');
 const ideaText = document.getElementById('ideaText');
+const textAreaStuff = document.querySelector("textarea");
+const moveBt = document.querySelector('.drag');
+
+const icon = document.querySelector('.icon');
 const finishButton = document.getElementById('finishButton');
 
+
+let selectedColor = 'rgba(128, 128, 128, 0.5)';
+const starRadius = 14;
+let isExpanded = false;  
+
 let currentStarIndex = null;
-let ideaArray = {};
+let ideaObj = {};
 
 
+
+canvas.addEventListener("mousemove", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left; // Adjust X to canvas space
+    const y = event.clientY - rect.top;  // Adjust Y to canvas space
+
+    let isHoveringOverStar = false;
+
+    for (let i = 0; i < starData.length; i++) {
+        const tempStar = starData[i];
+        const distance = Math.sqrt((x - tempStar.cx) ** 2 + (y - tempStar.cy) ** 2);
+
+        if (distance <= tempStar.outerRadius) {
+            // If within the star's radius, set the flag and break out of the loop
+            isHoveringOverStar = true;
+            break;
+        }
+    }
+
+    // Change the cursor based on whether it's over a star
+    canvas.style.cursor = isHoveringOverStar ? "pointer" : "default";
+});
 
 // Function to expand/collapse color options
 colorPickerMain.addEventListener('click', () => {
@@ -39,8 +68,9 @@ colorOptions.forEach((option) => {
     });
 });
 
-
-function drawStar(cx, cy, spikes, outerRadius) {
+// Function to create stars
+function drawStar(cx, cy, spikes, outerRadius, color) {
+    let currentColor = color;
     const innerRadius = outerRadius / 2.0;
     const rot = Math.PI / 2 * 3;  // Rotation offset to start drawing at the top
     let x = cx;
@@ -65,28 +95,37 @@ function drawStar(cx, cy, spikes, outerRadius) {
 
     c.lineTo(cx, cy - outerRadius);  // Complete the star by connecting back to the first point
     c.closePath();
-    c.fillStyle = selectedColor;
+    c.fillStyle = currentColor;
     c.fill();  // Fill the star
+}
+
+// Draw random stars
+for (i = 0; i < 50; i++) {
+    const randStarSize = Math.round(Math.random() * 4) + 2;
+    const randStarCx = Math.round(Math.random() * 1300);
+    const randStarCy = Math.round(Math.random() * 700);
+    // C8B6FF F5FEFD - white
+    drawStar(randStarCx, randStarCy, 5, randStarSize, "#C8B6FF");
 }
 
 // Define all the star coordinates and sizes
 const starData = [
-    { cx: 415, cy: 35, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 370, cy: 100, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 395, cy: 165, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 300, cy: 360, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 215, cy: 490, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 115, cy: 620, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 230, cy: 568, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 300, cy: 560, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 445, cy: 525, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 517, cy: 535, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 790, cy: 543, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 893, cy: 570, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 960, cy: 550, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 1025, cy: 610, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 970, cy: 660, spikes: 5, outerRadius: 10, colored: false, whatColor: null },
-    { cx: 892, cy: 657, spikes: 5, outerRadius: 10, colored: false, whatColor: null }
+    { cx: 415, cy: 35, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 370, cy: 100, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 395, cy: 165, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 300, cy: 360, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 215, cy: 490, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 115, cy: 620, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 230, cy: 568, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 300, cy: 560, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 445, cy: 525, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 517, cy: 535, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 790, cy: 543, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 893, cy: 570, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 960, cy: 550, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 1025, cy: 610, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 970, cy: 660, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 892, cy: 657, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null }
 ];
 
 // Draw the initial stars in gray
@@ -109,15 +148,22 @@ canvas.addEventListener('click', function (event) {
         if (distance <= currentStar.outerRadius) {
             if (i === 0 || starData[i - 1].colored === true) {
                 // Clear the old star before drawing the new one
-                c.clearRect(currentStar.cx - currentStar.outerRadius, currentStar.cy - currentStar.outerRadius, 
-                            currentStar.outerRadius * 2, currentStar.outerRadius * 2);
+                c.clearRect(currentStar.cx - currentStar.outerRadius, currentStar.cy - currentStar.outerRadius,
+                    currentStar.outerRadius * 2, currentStar.outerRadius * 2);
 
                 // Set the star to colored and update its color
                 starData[i].colored = true;
                 starData[i].whatColor = selectedColor
                 drawStar(currentStar.cx, currentStar.cy, currentStar.spikes, currentStar.outerRadius, selectedColor);
 
-
+                saveButton.style.backgroundColor = selectedColor;
+                style.innerHTML = `
+                    #ideaText::placeholder {
+                    color: ${selectedColor};
+                }`;
+                document.head.appendChild(style);
+                moveBt.style.fill = selectedColor;
+                textAreaStuff.style.color = selectedColor;
                 popUp.classList.add('show');
                 currentStarIndex = i;
 
@@ -127,10 +173,11 @@ canvas.addEventListener('click', function (event) {
     }
 });
 
+// Save button functionality
 saveButton.addEventListener('click', () => {
-    ideaArray[currentStarIndex] = ideaText.value;
+    ideaObj[currentStarIndex] = ideaText.value;
     ideaText.value = '';
-    console.log(ideaArray);
+    console.log(ideaObj);
     popUp.classList.remove('show');  // Hide the pop-up after saving
 });
 
@@ -138,21 +185,10 @@ function lerp(start, end, t) {
     return start + (end - start) * t;
 }
 
-// Function to interpolate colors
-function interpolateColor(color1, color2, t) {
-    const c1 = color1.replace('rgb(', '').replace(')', '').split(',');
-    const c2 = color2.replace('rgb(', '').replace(')', '').split(',');
-    const r = Math.round(lerp(c1[0], c2[0], t));
-    const g = Math.round(lerp(c1[1], c2[1], t));
-    const b = Math.round(lerp(c1[2], c2[2], t));
-    return `rgb(${r},${g},${b})`;
-}
-
-
 function animateLines() {
     let starIndex = 0;  // Start from the first star
     let progress = 0;   // Progress of the animation (0 to 1)
-    const speed = 0.06; // Animation speed (adjust this value as needed)
+    const speed = 0.07; // Animation speed (adjust this value as needed)
 
     function drawLineStep() {
         // Define the two stars we're connecting
@@ -165,7 +201,7 @@ function animateLines() {
 
         // Redraw all the stars first to ensure they remain on the canvas
         starData.forEach(star => {
-            drawStar(star.cx, star.cy, star.spikes, star.outerRadius, star.whatColor || 'rgba(255, 255, 255, 0.5)');
+            drawStar(star.cx, star.cy, star.spikes, star.outerRadius, star.whatColor);
         });
 
         // Draw the line from the first star to the current point in the animation
@@ -197,10 +233,57 @@ function animateLines() {
     requestAnimationFrame(drawLineStep);
 }
 
-
 // Button to finish drawing
 finishButton.addEventListener('click', () => {
     if (starData[starData.length - 1].colored === true) {
         animateLines();  // Call the function to animate the drawing of lines
     }
 });
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+icon.addEventListener('click', openNav);
+
+// Mouse down event to initiate drag
+let offsetX, offsetY, pos1, pos2;
+
+// Mouse down event to initiate drag
+moveBt.addEventListener('mousedown', (event) => {
+    // Prevent text selection during drag
+    event.preventDefault();
+
+    // Calculate the offset between the mouse position and the pop-up's top-left corner
+    offsetX = event.clientX;
+    offsetY = event.clientY;
+
+    // Add the mousemove event to the document to drag the pop-up
+    document.addEventListener('mousemove', onMouseMove);
+
+    // Remove dragging on mouseup
+    document.addEventListener('mouseup', onMouseUp);
+});
+
+// Function to handle drag movement
+function onMouseMove(event) {
+    // Update the pop-up position based on the initial offset
+    pos1 = offsetX - event.clientX;
+    pos2 = offsetY - event.clientY;
+    offsetX = event.clientX;
+    offsetY = event.clientY;
+    popUp.style.left = (popUp.offsetLeft - pos1) + "px";
+    popUp.style.top = (popUp.offsetTop - pos2) + "px";
+}
+
+// Function to end drag on mouseup
+function onMouseUp() {
+    // Remove the mousemove and mouseup events when dragging stops
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+}
