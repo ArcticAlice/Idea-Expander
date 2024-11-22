@@ -1,3 +1,4 @@
+
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
@@ -12,61 +13,43 @@ const textAreaStuff = document.querySelector("textarea");
 const moveBt = document.querySelector('.drag');
 
 const icon = document.querySelector('.icon');
+const ideaIcon = document.querySelector('.ideaIcon');
+const closeBt = document.querySelector(".closebtn");
+const closeBtTwo = document.querySelector(".closebtn2");
 const finishButton = document.getElementById('finishButton');
 
 
-let selectedColor = 'rgba(128, 128, 128, 0.5)';
-const starRadius = 14;
-let isExpanded = false;  
+let selectedColor = '#C8B6FF';
+const starRadius = 15;
+let isExpanded = false;
 
-let currentStarIndex = null;
-let ideaObj = {};
+let isPopUpClosed = true;
 
+let currentStarIndex = JSON.parse(localStorage.getItem("Index")) || null;
+let myArray = JSON.parse(localStorage.getItem("starArray"));
+let ideaObj = [];
 
+let offsetX, offsetY, pos1, pos2;
 
-canvas.addEventListener("mousemove", (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left; // Adjust X to canvas space
-    const y = event.clientY - rect.top;  // Adjust Y to canvas space
-
-    let isHoveringOverStar = false;
-
-    for (let i = 0; i < starData.length; i++) {
-        const tempStar = starData[i];
-        const distance = Math.sqrt((x - tempStar.cx) ** 2 + (y - tempStar.cy) ** 2);
-
-        if (distance <= tempStar.outerRadius) {
-            // If within the star's radius, set the flag and break out of the loop
-            isHoveringOverStar = true;
-            break;
-        }
-    }
-
-    // Change the cursor based on whether it's over a star
-    canvas.style.cursor = isHoveringOverStar ? "pointer" : "default";
-});
-
-// Function to expand/collapse color options
-colorPickerMain.addEventListener('click', () => {
-    isExpanded = !isExpanded;
-    colorOptions.forEach((option) => {
-        if (isExpanded) {
-            option.classList.add('active');
-        } else {
-            option.classList.remove('active');
-        }
-    });
-});
-
-// Function to handle color selection
-colorOptions.forEach((option) => {
-    option.addEventListener('click', (e) => {
-        selectedColor = e.target.style.backgroundColor;  // Set selected color
-        colorPickerMain.style.backgroundColor = selectedColor;  // Change main button color
-        isExpanded = false;  // Collapse color options after selection
-        colorOptions.forEach(opt => opt.classList.remove('active'));  // Hide options
-    });
-});
+// Define all the star coordinates and sizes
+const starData = [
+    { cx: 415, cy: 35, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null, },
+    { cx: 370, cy: 100, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 395, cy: 165, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 300, cy: 360, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 215, cy: 490, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 115, cy: 620, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 230, cy: 568, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 300, cy: 560, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 445, cy: 525, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 517, cy: 535, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 790, cy: 543, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 893, cy: 570, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 960, cy: 550, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 1025, cy: 610, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 970, cy: 660, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
+    { cx: 892, cy: 657, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null }
+];
 
 // Function to create stars
 function drawStar(cx, cy, spikes, outerRadius, color) {
@@ -99,6 +82,36 @@ function drawStar(cx, cy, spikes, outerRadius, color) {
     c.fill();  // Fill the star
 }
 
+
+// Class for Star Info
+class starInfoSet {
+    constructor(color, text) {
+        this.color = color;
+        this.text = text;
+    }
+}
+
+
+// Code Segment For Color Options
+colorPickerMain.addEventListener('click', () => {
+    isExpanded = !isExpanded;
+    colorOptions.forEach((option) => {
+        if (isExpanded) {
+            option.classList.add('active');
+        } else {
+            option.classList.remove('active');
+        }
+    });
+});
+
+colorOptions.forEach((option) => {
+    option.addEventListener('click', (e) => {
+        selectedColor = e.target.style.backgroundColor;  // Set selected color
+        colorPickerMain.style.backgroundColor = selectedColor;  // Change main button color
+    });
+});
+
+
 // Draw random stars
 for (i = 0; i < 50; i++) {
     const randStarSize = Math.round(Math.random() * 4) + 2;
@@ -107,34 +120,35 @@ for (i = 0; i < 50; i++) {
     // C8B6FF F5FEFD - white
     drawStar(randStarCx, randStarCy, 5, randStarSize, "#C8B6FF");
 }
-
-// Define all the star coordinates and sizes
-const starData = [
-    { cx: 415, cy: 35, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 370, cy: 100, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 395, cy: 165, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 300, cy: 360, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 215, cy: 490, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 115, cy: 620, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 230, cy: 568, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 300, cy: 560, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 445, cy: 525, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 517, cy: 535, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 790, cy: 543, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 893, cy: 570, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 960, cy: 550, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 1025, cy: 610, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 970, cy: 660, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null },
-    { cx: 892, cy: 657, spikes: 5, outerRadius: starRadius, colored: false, whatColor: null }
-];
-
 // Draw the initial stars in gray
-for (let i = 0; i < starData.length; i++) {
-    const currentStar = starData[i];
-    drawStar(currentStar.cx, currentStar.cy, currentStar.spikes, currentStar.outerRadius, 'gray');
+function grayStars() {
+
+    let myArray = JSON.parse(localStorage.getItem("starArray"));
+
+    let count = 0;
+
+    // Check if the array exists and the index is within bounds
+    if (myArray && Array.isArray(myArray)) {
+
+        for(let i = 0; i < myArray.length; i++) {
+            starData[i].colored = true;
+            starData[i].whatColor = myArray[i].color;
+            const currentStar = starData[i];
+            drawStar(currentStar.cx, currentStar.cy, currentStar.spikes, currentStar.outerRadius, myArray[i].color);
+            count++;
+        }
+    }
+    
+    for (let i = count; i < starData.length; i++) {
+        const currentStar = starData[i];
+        drawStar(currentStar.cx, currentStar.cy, currentStar.spikes, currentStar.outerRadius, 'gray');
+    }
 }
 
-// Handle canvas click event
+grayStars();
+
+
+// Code Segment For Clicking Stars
 canvas.addEventListener('click', function (event) {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left; // Adjust X to canvas space
@@ -146,7 +160,8 @@ canvas.addEventListener('click', function (event) {
 
         // Check if the click was within the radius of the star
         if (distance <= currentStar.outerRadius) {
-            if (i === 0 || starData[i - 1].colored === true) {
+            if ((i === 0 || starData[i - 1].colored === true) && isPopUpClosed) {
+
                 // Clear the old star before drawing the new one
                 c.clearRect(currentStar.cx - currentStar.outerRadius, currentStar.cy - currentStar.outerRadius,
                     currentStar.outerRadius * 2, currentStar.outerRadius * 2);
@@ -156,15 +171,12 @@ canvas.addEventListener('click', function (event) {
                 starData[i].whatColor = selectedColor
                 drawStar(currentStar.cx, currentStar.cy, currentStar.spikes, currentStar.outerRadius, selectedColor);
 
-                saveButton.style.backgroundColor = selectedColor;
-                style.innerHTML = `
-                    #ideaText::placeholder {
-                    color: ${selectedColor};
-                }`;
-                document.head.appendChild(style);
-                moveBt.style.fill = selectedColor;
-                textAreaStuff.style.color = selectedColor;
+                loadData(i);
+                changeHTML(selectedColor);
+
                 popUp.classList.add('show');
+                isPopUpClosed = false;
+
                 currentStarIndex = i;
 
                 break;  // Stop checking after a valid star is clicked
@@ -173,14 +185,8 @@ canvas.addEventListener('click', function (event) {
     }
 });
 
-// Save button functionality
-saveButton.addEventListener('click', () => {
-    ideaObj[currentStarIndex] = ideaText.value;
-    ideaText.value = '';
-    console.log(ideaObj);
-    popUp.classList.remove('show');  // Hide the pop-up after saving
-});
 
+// Code Segment For Animating Stars
 function lerp(start, end, t) {
     return start + (end - start) * t;
 }
@@ -233,28 +239,49 @@ function animateLines() {
     requestAnimationFrame(drawLineStep);
 }
 
-// Button to finish drawing
+
+// Code Segment For Finish Button
 finishButton.addEventListener('click', () => {
     if (starData[starData.length - 1].colored === true) {
         animateLines();  // Call the function to animate the drawing of lines
     }
 });
 
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-}
 
-/* Set the width of the side navigation to 0 */
-function closeNav() {
+// Code Segement For Navigation Bar
+icon.addEventListener('click', () => {
+    document.getElementById("mySidenav").style.width = "200px";
+});
+closeBt.addEventListener('click', () => {
     document.getElementById("mySidenav").style.width = "0";
+})
+
+
+// Code Segement For Idea Navigation Bar
+ideaIcon.addEventListener('click', () => {
+    document.getElementById("myIdeaNav").style.width = "250px";
+})
+closeBtTwo.addEventListener('click', () => {
+    document.getElementById("myIdeaNav").style.width = "0";
+})
+
+// Code Segment For Drag Button
+function onMouseMove(event) {
+    // Update the pop-up position based on the initial offset
+    pos1 = offsetX - event.clientX;
+    pos2 = offsetY - event.clientY;
+    offsetX = event.clientX;
+    offsetY = event.clientY;
+    popUp.style.left = (popUp.offsetLeft - pos1) + "px";
+    popUp.style.top = (popUp.offsetTop - pos2) + "px";
 }
-
-icon.addEventListener('click', openNav);
-
-// Mouse down event to initiate drag
-let offsetX, offsetY, pos1, pos2;
-
-// Mouse down event to initiate drag
+    // Function to end drag on mouseup
+function onMouseUp() {
+    // Remove the mousemove and mouseup events when dragging stops
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+}
+    // Mouse down event to initiate drag
 moveBt.addEventListener('mousedown', (event) => {
     // Prevent text selection during drag
     event.preventDefault();
@@ -269,21 +296,108 @@ moveBt.addEventListener('mousedown', (event) => {
     // Remove dragging on mouseup
     document.addEventListener('mouseup', onMouseUp);
 });
+    // Mouse moving away
+canvas.addEventListener("mousemove", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left; // Adjust X to canvas space
+    const y = event.clientY - rect.top;  // Adjust Y to canvas space
 
-// Function to handle drag movement
-function onMouseMove(event) {
-    // Update the pop-up position based on the initial offset
-    pos1 = offsetX - event.clientX;
-    pos2 = offsetY - event.clientY;
-    offsetX = event.clientX;
-    offsetY = event.clientY;
-    popUp.style.left = (popUp.offsetLeft - pos1) + "px";
-    popUp.style.top = (popUp.offsetTop - pos2) + "px";
+    let isHoveringOverStar = false;
+
+    for (let i = 0; i < starData.length; i++) {
+        const tempStar = starData[i];
+        const distance = Math.sqrt((x - tempStar.cx) ** 2 + (y - tempStar.cy) ** 2);
+
+        if (distance <= tempStar.outerRadius) {
+            // If within the star's radius, set the flag and break out of the loop
+            isHoveringOverStar = true;
+            break;
+        }
+    }
+
+    // Change the cursor based on whether it's over a star
+    canvas.style.cursor = isHoveringOverStar ? "pointer" : "default";
+});
+
+
+// Code Segment For Loading Data
+function loadData(index) {
+    // Check if the array exists and the index is within bounds
+    if (myArray && Array.isArray(myArray) && index < myArray.length) {
+        let currentInfo = myArray[index].text;
+        
+        // If currentInfo is defined, set it; otherwise, leave placeholder
+        ideaText.value = currentInfo ?? ideaText.placeholder;
+    }
 }
 
-// Function to end drag on mouseup
-function onMouseUp() {
-    // Remove the mousemove and mouseup events when dragging stops
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+// Code Segment For Save Button
+saveButton.addEventListener('click', () => {
+    if (myArray && Array.isArray(myArray)) {
+        ideaObj = myArray;
+    }
+    ideaObj[currentStarIndex] = new starInfoSet(selectedColor, ideaText.value);
+    
+    // Save the idea in localStorage with the currentStarIndex as the key
+    localStorage.setItem("starArray", JSON.stringify(ideaObj));
+    localStorage.setItem("Index", JSON.stringify(currentStarIndex));
+    
+    // Clear the textarea
+    ideaText.value = '';
+    
+    // Hide the pop-up after saving
+    popUp.classList.remove('show');
+
+    isPopUpClosed = true;
+
+    // Re-render the idea containers with the updated ideas
+    renderIdeas();
+});
+
+
+function renderIdeas() {
+    const ideaContainers = document.querySelector('.ideaContainers');
+    ideaContainers.innerHTML = ''; // Clear existing content to avoid duplication
+
+    if (myArray && Array.isArray(myArray)) {
+        myArray.forEach((starInfo, index) => {
+            if (starInfo) {
+                // Create a new idea box dynamically
+                const ideaBox = document.createElement('div');
+                ideaBox.className = 'idea';
+                ideaBox.innerHTML = `
+                    <div style="color: ${starInfo.color || 'black'}">
+                        <p>${starInfo.text || 'No text provided'}</p>
+                    </div>
+                `;
+                
+                // Add click event listener
+                ideaBox.addEventListener('click', () => {
+                    handleIdeaClick(starInfo, index); // Pass data to the handler
+                });
+
+                ideaContainers.appendChild(ideaBox);
+            }
+        });
+    }
+}
+
+function handleIdeaClick(starInfo, index) {
+    loadData(index);
+    popUp.classList.add('show');
+}
+
+// Initial rendering of ideas when page loads
+renderIdeas();
+
+function changeHTML(color) {
+    saveButton.style.backgroundColor = color;
+    style.innerHTML = `
+        #ideaText::placeholder {
+        color: ${color};
+    }`;
+
+    document.head.appendChild(style);
+    moveBt.style.fill = color;
+    textAreaStuff.style.color = color;
 }

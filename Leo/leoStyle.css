@@ -26,7 +26,7 @@ body {
 .color-picker-main {
     width: 25px;
     height: 25px;
-    background-color: grey;
+    background-color: #C8B6FF;
     margin-bottom: 10px;
     border-radius: 50%;
     position: fixed;
@@ -85,6 +85,11 @@ body {
 
 .color-option:nth-child(8) {
     left: calc(var(--colorSpacing) + 36%);
+    /* Move the third color option even higher */
+}
+
+.color-option:nth-child(9) {
+    left: calc(var(--colorSpacing) + 42%);
     /* Move the third color option even higher */
 }
 
@@ -149,6 +154,13 @@ textarea {
     height: auto;
 }
 
+.drag {
+    height: 15px;
+    width: 15px;
+    fill: #C8B6FF;
+    cursor: pointer;
+}
+
 .finishStyle {
     padding: 8px 16px;
     /* Adjust padding to make it smaller if desired */
@@ -158,8 +170,19 @@ textarea {
     border-radius: 5px;
     cursor: pointer;
     position: fixed;
-    top: 95%;
+    top: 94.5%;
     left: 93%;
+}
+
+.icon {
+    position: fixed;
+    z-index: 1;
+    height: 30px;
+    width: 30px;
+    top: 3%;
+    left: 2%;
+    fill: #C8B6FF;
+    cursor: pointer;
 }
 
 /* The side navigation menu */
@@ -209,24 +232,80 @@ textarea {
     margin-left: 50px;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#main {
-    transition: margin-left .5s;
-    padding: 20px;
-}
-
-.icon {
+.ideaIcon {
     position: fixed;
     z-index: 1;
     height: 40px;
     width: 40px;
+    top: 3%;
+    left: 96%;
     fill: #C8B6FF;
     cursor: pointer;
 }
 
-.drag {
-    height: 15px;
-    width: 15px;
-    fill: #C8B6FF;
-    cursor: pointer;
+/* The idea navigation menu */
+.ideaNav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0; /* Open from the right */
+    background-color: #C8B6FF;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+}
+
+/* The idea menu links */
+.ideaNav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+/* Position and style the close button (top right corner) */
+.ideaNav .closebtn2 {
+    position: absolute;
+    top: 0;
+    right: 75%;
+    font-size: 36px;
+}
+
+.ideaContainers {
+    display: grid;
+    grid-template-columns: 1;
+}
+
+.idea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ccc; /* Light border for visibility */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    background-color: #f9f9f9; /* Light background */
+    color: #333; /* Default text color */
+    font-size: 16px; /* Text size */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effects */
+}
+
+/* Hover effect for interactivity */
+.idea:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+/* Style for the text inside .idea */
+.idea p {
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    text-align: center; /* Center align text */
+    word-wrap: break-word; /* Handle long text */
 }
