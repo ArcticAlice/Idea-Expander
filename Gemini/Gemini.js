@@ -29,15 +29,15 @@ let currentStarIndex = 0;
 let offsetX, offsetY, pos1, pos2;
 
 
-let starData = localStorage.getItem('starArray');
+let starData = localStorage.getItem('geminiArray');
 
 function creatingStarData() {
     if (starData) {
         starData = JSON.parse(starData);
     } else {
         starData = [
-            { cx: 517, cy: 35, colored: false, color: 'gray', text: '' },
-            { cx: 370, cy: 100, colored: false, color: 'gray', text: '' },
+            { cx: 530, cy: 111, colored: false, color: 'gray', text: '' },
+            { cx: 790, cy: 50, colored: false, color: 'gray', text: '' },
             { cx: 395, cy: 165, colored: false, color: 'gray', text: '' },
             { cx: 300, cy: 360, colored: false, color: 'gray', text: '' },
             { cx: 215, cy: 490, colored: false, color: 'gray', text: '' },
@@ -311,7 +311,7 @@ saveButton.addEventListener('click', () => {
 
     starData[currentStarIndex].text = ideaText.value
     // Save the idea in localStorage with the currentStarIndex as the key
-    localStorage.setItem("starArray", JSON.stringify(starData));
+    localStorage.setItem("geminiArray", JSON.stringify(starData));
 
     // Clear the textarea
     ideaText.value = '';
@@ -377,3 +377,14 @@ function changeHTML(color) {
     moveBt.style.fill = color;
     textAreaStuff.style.color = color;
 }
+
+document.addEventListener('click', (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+  
+    console.log(`Clicked at: (${x}, ${y})`);
+    // You can use these x and y coordinates for further actions, like:
+    // - Drawing elements on a canvas
+    // - Triggering specific events based on click location
+    // - Modifying the DOM based on the click position
+  });

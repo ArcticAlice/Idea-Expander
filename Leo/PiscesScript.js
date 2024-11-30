@@ -29,7 +29,7 @@ let currentStarIndex = 0;
 let offsetX, offsetY, pos1, pos2;
 
 
-let starData = localStorage.getItem('starArray');
+let starData = localStorage.getItem('piscesArray');
 
 function creatingStarData() {
     if (starData) {
@@ -311,7 +311,7 @@ saveButton.addEventListener('click', () => {
 
     starData[currentStarIndex].text = ideaText.value
     // Save the idea in localStorage with the currentStarIndex as the key
-    localStorage.setItem("starArray", JSON.stringify(starData));
+    localStorage.setItem("piscesArray", JSON.stringify(starData));
 
     // Clear the textarea
     ideaText.value = '';
