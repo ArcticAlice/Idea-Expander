@@ -17,6 +17,14 @@ const closeBt = document.querySelector(".closebtn");
 const closeBtTwo = document.querySelector(".closebtn2");
 const finishButton = document.getElementById('finishButton');
 
+const a6 = new Audio('../Music/a6.mp3');
+const b6 = new Audio('../Music/b6.mp3');
+const c6 = new Audio('../Music/c6.mp3');
+const d6 = new Audio('../Music/d6.mp3');
+const e6 = new Audio('../Music/e6.mp3');
+const f6 = new Audio('../Music/f6.mp3');
+const g6 = new Audio('../Music/g6.mp3');
+
 
 let selectedColor = '#C8B6FF';
 let isExpanded = false;
@@ -27,6 +35,8 @@ let isPopUpClosed = true;
 let currentStarIndex = 0;
 
 let offsetX, offsetY, pos1, pos2;
+
+let soundArray = [a6, b6, c6, d6, e6, f6, g6];
 
 
 let starData = localStorage.getItem('piscesArray');
@@ -165,6 +175,13 @@ canvas.addEventListener('click', function (event) {
                 changeHTML(selectedColor);
                 popUp.classList.add('show');
                 isPopUpClosed = false;
+
+                if (currentStarIndex > 5) {
+                    const hello = currentStarIndex % 5;
+                    soundArray[hello].play();
+                }else {
+                    soundArray[currentStarIndex].play();   
+                }
 
                 break;  // Stop checking after a valid star is clicked
             }
