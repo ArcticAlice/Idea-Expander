@@ -17,14 +17,14 @@ const closeBt = document.querySelector(".closebtn");
 const closeBtTwo = document.querySelector(".closebtn2");
 const finishButton = document.getElementById('finishButton');
 
-const a6 = new Audio('../Music/a6.mp3');
-const b6 = new Audio('../Music/b6.mp3');
-const c6 = new Audio('../Music/c6.mp3');
-const d6 = new Audio('../Music/d6.mp3');
-const e6 = new Audio('../Music/e6.mp3');
-const f6 = new Audio('../Music/f6.mp3');
-const g6 = new Audio('../Music/g6.mp3');
-const selectSound = new Audio('../Music/select.mp3');
+const a6 = new Audio('../Extras/Music/a6.mp3');
+const b6 = new Audio('../Extras/Music/b6.mp3');
+const c6 = new Audio('../Extras/Music/c6.mp3');
+const d6 = new Audio('../Extras/Music/d6.mp3');
+const e6 = new Audio('../Extras/Music/e6.mp3');
+const f6 = new Audio('../Extras/Music/f6.mp3');
+const g6 = new Audio('../Extras/Music/g6.mp3');
+const selectSound = new Audio('../Extras/Music/select.mp3');
 
 
 let selectedColor = '#C8B6FF';
