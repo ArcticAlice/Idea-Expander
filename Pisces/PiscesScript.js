@@ -24,6 +24,7 @@ const d6 = new Audio('../Music/d6.mp3');
 const e6 = new Audio('../Music/e6.mp3');
 const f6 = new Audio('../Music/f6.mp3');
 const g6 = new Audio('../Music/g6.mp3');
+const selectSound = new Audio('../Music/select.mp3');
 
 
 let selectedColor = '#C8B6FF';
@@ -104,6 +105,7 @@ function drawStar(cx, cy, size, color) {
 
 // Code Segment For Color Options
 colorPickerMain.addEventListener('click', () => {
+    selectSound.play();
     isExpanded = !isExpanded;
     colorOptions.forEach((option) => {
         if (isExpanded) {
@@ -116,6 +118,7 @@ colorPickerMain.addEventListener('click', () => {
 
 colorOptions.forEach((option) => {
     option.addEventListener('click', (e) => {
+        selectSound.play();
         selectedColor = e.target.style.backgroundColor;  // Set selected color
         colorPickerMain.style.backgroundColor = selectedColor;  // Change main button color
     });

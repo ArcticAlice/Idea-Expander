@@ -17,6 +17,15 @@ const closeBt = document.querySelector(".closebtn");
 const closeBtTwo = document.querySelector(".closebtn2");
 const finishButton = document.getElementById('finishButton');
 
+const a6 = new Audio('../Music/a6.mp3');
+const b6 = new Audio('../Music/b6.mp3');
+const c6 = new Audio('../Music/c6.mp3');
+const d6 = new Audio('../Music/d6.mp3');
+const e6 = new Audio('../Music/e6.mp3');
+const f6 = new Audio('../Music/f6.mp3');
+const g6 = new Audio('../Music/g6.mp3');
+const selectSound = new Audio('../Music/select.mp3');
+
 
 let selectedColor = '#C8B6FF';
 let isExpanded = false;
@@ -28,6 +37,7 @@ let currentStarIndex = 0;
 
 let offsetX, offsetY, pos1, pos2;
 
+let soundArray = [a6, b6, c6, d6, e6, f6, g6];
 
 let starData = localStorage.getItem('geminiArray');
 
@@ -36,22 +46,21 @@ function creatingStarData() {
         starData = JSON.parse(starData);
     } else {
         starData = [
-            { cx: 530, cy: 111, colored: false, color: 'gray', text: '' },
-            { cx: 790, cy: 50, colored: false, color: 'gray', text: '' },
-            { cx: 395, cy: 165, colored: false, color: 'gray', text: '' },
-            { cx: 300, cy: 360, colored: false, color: 'gray', text: '' },
-            { cx: 215, cy: 490, colored: false, color: 'gray', text: '' },
-            { cx: 115, cy: 620, colored: false, color: 'gray', text: '' },
-            { cx: 230, cy: 568, colored: false, color: 'gray', text: '' },
-            { cx: 300, cy: 560, colored: false, color: 'gray', text: '' },
-            { cx: 445, cy: 525, colored: false, color: 'gray', text: '' },
-            { cx: 517, cy: 535, colored: false, color: 'gray', text: '' },
-            { cx: 790, cy: 543, colored: false, color: 'gray', text: '' },
-            { cx: 893, cy: 570, colored: false, color: 'gray', text: '' },
-            { cx: 960, cy: 550, colored: false, color: 'gray', text: '' },
-            { cx: 1025, cy: 610, colored: false, color: 'gray', text: '' },
-            { cx: 970, cy: 660, colored: false, color: 'gray', text: '' },
-            { cx: 892, cy: 657, colored: false, color: 'gray', text: '' }
+            { cx: 784, cy: 50, colored: false, color: 'gray', text: '' },
+            { cx: 770, cy: 200, colored: false, color: 'gray', text: '' },
+            { cx: 950, cy: 190, colored: false, color: 'gray', text: '' },
+            { cx: 800, cy: 500, colored: false, color: 'gray', text: '' },
+            { cx: 700, cy: 670, colored: false, color: 'gray', text: '' },
+            { cx: 900, cy: 660, colored: false, color: 'gray', text: '' },
+            { cx: 570, cy: 200, colored: false, color: 'gray', text: '' },
+            { cx: 400, cy: 195, colored: false, color: 'gray', text: '' },
+            { cx: 375, cy: 100, colored: false, color: 'gray', text: '' },
+            { cx: 240, cy: 240, colored: false, color: 'gray', text: '' },
+            { cx: 375, cy: 370, colored: false, color: 'gray', text: '' },
+            { cx: 280, cy: 500, colored: false, color: 'gray', text: '' },
+            { cx: 310, cy: 650, colored: false, color: 'gray', text: '' },
+            { cx: 505, cy: 500, colored: false, color: 'gray', text: '' },
+            { cx: 535, cy: 660, colored: false, color: 'gray', text: '', animated: false },
         ];
     }
 }
@@ -94,6 +103,7 @@ function drawStar(cx, cy, size, color) {
 
 // Code Segment For Color Options
 colorPickerMain.addEventListener('click', () => {
+    selectSound.play();
     isExpanded = !isExpanded;
     colorOptions.forEach((option) => {
         if (isExpanded) {
@@ -106,6 +116,7 @@ colorPickerMain.addEventListener('click', () => {
 
 colorOptions.forEach((option) => {
     option.addEventListener('click', (e) => {
+        selectSound.play();
         selectedColor = e.target.style.backgroundColor;  // Set selected color
         colorPickerMain.style.backgroundColor = selectedColor;  // Change main button color
     });
@@ -144,7 +155,7 @@ canvas.addEventListener('click', function (event) {
 
         // Check if the click was within the radius of the star
         if (distance <= outerRadius) {
-            if ((i === 0 || starData[i - 1].colored === true) && isPopUpClosed) {
+            if (isPopUpClosed) {
 
                 // Clear the old star before drawing the new one
                 c.clearRect(currentStar.cx - outerRadius, currentStar.cy - outerRadius,
@@ -166,6 +177,13 @@ canvas.addEventListener('click', function (event) {
                 popUp.classList.add('show');
                 isPopUpClosed = false;
 
+                if (currentStarIndex > 5) {
+                    const hello = currentStarIndex % 5;
+                    soundArray[hello].play();
+                }else {
+                    soundArray[currentStarIndex].play();   
+                }
+
                 break;  // Stop checking after a valid star is clicked
             }
         }
@@ -173,64 +191,114 @@ canvas.addEventListener('click', function (event) {
 });
 
 
-function animateLines() {
-    let starIndex = 0;  // Start from the first star
-    let progress = 0;   // Progress of the animation (0 to 1)
-    const speed = 0.07; // Animation speed (adjust this value as needed)
+function animateGeminiLines() {
+    // Define the groups of connections
+    const connectionGroups = [
+        // Group 1: Star 0 → Star 1 → Star 2
+        [{ from: 0, to: 1 }, { from: 1, to: 2 }],
+        // Group 2: Star 1 → Star 3 → Star 4
+        [{ from: 1, to: 3 }, { from: 3, to: 4 }],
+        // Group 3: Star 3 → Star 5
+        [{ from: 3, to: 5 }],
+        // Group 4: Star 8 → Star 7 → Star 6 → Star 2
+        [{ from: 8, to: 7 }, { from: 7, to: 6 }, { from: 6, to: 1 }],
+        // Group 5: Star 7 → Star 9
+        [{ from: 7, to: 9 }],
+        // Group 6: Star 7 → Star 10 → Star 11 → Star 12
+        [{ from: 7, to: 10 }, { from: 10, to: 11 }, { from: 11, to: 12 }],
+        // Group 7: Star 10 → Star 13 → Star 14
+        [{ from: 10, to: 13 }, { from: 13, to: 14 }]
+    ];
 
-    // Code Segment For Animating Stars
+    let groupIndex = 0;
+
     function lerp(start, end, t) {
         return start + (end - start) * t;
     }
 
-    function drawLineStep() {
-        // Define the two stars we're connecting
-        const star1 = starData[starIndex];
-        const star2 = starData[starIndex + 1];
+    function animateGroup(group, onComplete) {
+        let connectionIndex = 0;
+        let progress = 0;
+        const speed = 0.05; // Animation speed
 
-        // Interpolate between the two stars based on progress
-        const x = lerp(star1.cx, star2.cx, progress);
-        const y = lerp(star1.cy, star2.cy, progress);
+        function drawLineStep() {
+            const connection = group[connectionIndex];
+            const star1 = starData[connection.from];
+            const star2 = starData[connection.to];
 
-        // Redraw all the stars first to ensure they remain on the canvas
-        starData.forEach(star => {
-            drawStar(star.cx, star.cy, outerRadius, star.color);
-        });
+            // Interpolate between the two stars
+            const x = lerp(star1.cx, star2.cx, progress);
+            const y = lerp(star1.cy, star2.cy, progress);
 
-        // Draw the line from the first star to the current point in the animation
-        c.beginPath();
-        c.moveTo(star1.cx, star1.cy);
-        c.lineTo(x, y);
-        c.strokeStyle = 'white';
-        c.lineWidth = 1;
-        c.lineCap = 'round';
-        c.shadowColor = 'rgba(255, 255, 255, 0.7)';
-        c.shadowBlur = 1.5; // Add a glow effect
-        c.stroke();
+            // Redraw all the stars
+            starData.forEach(star => {
+                drawStar(star.cx, star.cy, outerRadius, star.color);
+            });
 
-        // If we've reached the second star, move to the next star
-        if (progress >= 1) {
-            starIndex++;
-            progress = 0; // Reset progress for the next line segment
-        } else {
-            progress += speed; // Increment progress
+            // Draw the current line
+            c.beginPath();
+            c.moveTo(star1.cx, star1.cy);
+            c.lineTo(x, y);
+            c.strokeStyle = 'white';
+            c.lineWidth = 1;
+            c.lineCap = 'round';
+            c.shadowColor = 'rgba(255, 255, 255, 0.7)';
+            c.shadowBlur = 1.5;
+            c.stroke();
+
+            // If the line is fully drawn, move to the next connection
+            if (progress >= 1) {
+                connectionIndex++;
+                progress = 0; // Reset progress
+            } else {
+                progress += speed; // Increment progress
+            }
+
+            // If all connections in the group are done, call onComplete
+            if (connectionIndex >= group.length) {
+                onComplete();
+            } else {
+                requestAnimationFrame(drawLineStep);
+            }
         }
 
-        // Continue animating if there are more stars to connect
-        if (starIndex < starData.length - 1) {
-            requestAnimationFrame(drawLineStep);
+        requestAnimationFrame(drawLineStep);
+    }
+
+    function animateNextGroup() {
+        if (groupIndex >= connectionGroups.length) return;
+
+        const currentGroup = connectionGroups[groupIndex];
+        const parallel = groupIndex === 0 || groupIndex === 3; // Parallel groups
+
+        if (parallel) {
+            // Parallel animation: Animate both groups simultaneously
+            const nextGroupIndex = groupIndex + 1;
+            animateGroup(currentGroup, () => {
+                groupIndex++;
+                if (groupIndex !== nextGroupIndex) animateNextGroup();
+            });
+            groupIndex++;
+            animateGroup(connectionGroups[groupIndex], animateNextGroup);
+        } else {
+            // Sequential animation
+            animateGroup(currentGroup, () => {
+                groupIndex++;
+                animateNextGroup();
+            });
         }
     }
 
-    // Start the animation
-    requestAnimationFrame(drawLineStep);
+    // Start animating the groups
+    animateNextGroup();
 }
+
 
 
 // Code Segment For Finish Button
 finishButton.addEventListener('click', () => {
     if (starData[starData.length - 1].colored === true) {
-        animateLines();  // Call the function to animate the drawing of lines
+        animateGeminiLines();  // Call the function to animate the drawing of lines
     }
 });
 
@@ -377,14 +445,3 @@ function changeHTML(color) {
     moveBt.style.fill = color;
     textAreaStuff.style.color = color;
 }
-
-document.addEventListener('click', (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
-  
-    console.log(`Clicked at: (${x}, ${y})`);
-    // You can use these x and y coordinates for further actions, like:
-    // - Drawing elements on a canvas
-    // - Triggering specific events based on click location
-    // - Modifying the DOM based on the click position
-  });
