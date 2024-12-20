@@ -46,10 +46,10 @@ function drawStar(cx, cy, size, color) {
     c.fill();  // Fill the star
 }
 
-for (i = 0; i < 75; i++) {
+for (i = 0; i < 100; i++) {
     const randStarSize = Math.round(Math.random() * 4) + 2;
     const randStarCx = Math.round(Math.random() * 1440);
-    const randStarCy = Math.round(Math.random() * 1000);
+    const randStarCy = Math.round(Math.random() * 800);
     // C8B6FF F5FEFD - white
     drawStar(randStarCx, randStarCy, randStarSize, "black");
 }

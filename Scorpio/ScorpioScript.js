@@ -39,25 +39,23 @@ let offsetX, offsetY, pos1, pos2;
 
 let soundArray = [a6, b6, c6, d6, e6, f6, g6];
 
-let starData = localStorage.getItem('virgoArray');
+let starData = localStorage.getItem('scorpioArray');
 
 function creatingStarData() {
     if (starData) {
         starData = JSON.parse(starData);
     } else {
         starData = [
-            { cx: 50, cy: 60, colored: false, color: 'gray', text: '' },
-            { cx: 300, cy: 120, colored: false, color: 'gray', text: '' },
-            { cx: 400, cy: 200, colored: false, color: 'gray', text: '' },
-            { cx: 350, cy: 400, colored: false, color: 'gray', text: '' },
-            { cx: 280, cy: 570, colored: false, color: 'gray', text: '' },
-            { cx: 850, cy: 150, colored: false, color: 'gray', text: '' },
-            { cx: 1070, cy: 280, colored: false, color: 'gray', text: '' },
-            { cx: 1050, cy: 380, colored: false, color: 'gray', text: '' },
-            { cx: 1200, cy: 440, colored: false, color: 'gray', text: '' },
-            { cx: 650, cy: 450, colored: false, color: 'gray', text: '' },
-            { cx: 730, cy: 600, colored: false, color: 'gray', text: '' },
-            { cx: 1050, cy: 680, colored: false, color: 'gray', text: '', animated: false },
+            { cx: 400, cy: 140, colored: false, color: 'gray', text: '' },
+            { cx: 280, cy: 80, colored: false, color: 'gray', text: '' },
+            { cx: 190, cy: 140, colored: false, color: 'gray', text: '' },
+            { cx: 200, cy: 240, colored: false, color: 'gray', text: '' },
+            { cx: 240, cy: 320, colored: false, color: 'gray', text: '' },
+            { cx: 540, cy: 330, colored: false, color: 'gray', text: '' },
+            { cx: 790, cy: 430, colored: false, color: 'gray', text: '' },
+            { cx: 770, cy: 600, colored: false, color: 'gray', text: '' },
+            { cx: 900, cy: 580, colored: false, color: 'gray', text: '' },
+            { cx: 1020, cy: 560, colored: false, color: 'gray', text: '', animated: false },
           ];
           
     }
@@ -193,17 +191,13 @@ function animateLines() {
     // Define the groups of connections
     const connectionGroups = [
         // Group 1: Star 0 → Star 1 → Star 2
-        [{ from: 0, to: 1 }, { from: 1, to: 2 }],
-        // Group 2: Star 1 → Star 3 → Star 4
-        [{ from: 2, to: 3 }, { from: 3, to: 4 }],
-        // Group 3: Star 3 → Star 5
-        [{ from: 2, to: 5 }],
+        [{ from: 0, to: 1 }, { from: 1, to: 2 }], [{ from: 2, to: 3 }, { from: 3, to: 4 }],
         // Group 4: Star 8 → Star 7 → Star 6 → Star 2
-        [{ from: 5, to: 6 }, { from: 6, to: 7 }, { from: 7, to: 8 }],
+        [{ from: 4, to: 5 }, { from: 5, to: 6 }],
         // Group 5: Star 7 → Star 9
-        [{ from: 5, to: 9 }],
-        // Group 6: Star 7 → Star 10 → Star 11 → Star 12
-        [{ from: 3, to: 9 }, { from: 9, to: 10 }, { from: 10, to: 11 }],
+        [{ from: 6, to: 7}], 
+        [{ from: 6, to: 8}], 
+        [{ from: 6, to: 9}],
     ];
 
     let groupIndex = 0;
@@ -215,7 +209,7 @@ function animateLines() {
     function animateGroup(group, onComplete) {
         let connectionIndex = 0;
         let progress = 0;
-        const speed = 0.05; // Animation speed
+        const speed = 0.07; // Animation speed
 
         function drawLineStep() {
             const connection = group[connectionIndex];
@@ -265,7 +259,7 @@ function animateLines() {
         if (groupIndex >= connectionGroups.length) return;
 
         const currentGroup = connectionGroups[groupIndex];
-        const parallel = groupIndex === 0 || groupIndex === 3; // Parallel groups
+        const parallel = groupIndex === 3 || groupIndex === 4; // Parallel groups
 
         if (parallel) {
             // Parallel animation: Animate both groups simultaneously
@@ -375,7 +369,7 @@ saveButton.addEventListener('click', () => {
 
     starData[currentStarIndex].text = ideaText.value
     // Save the idea in localStorage with the currentStarIndex as the key
-    localStorage.setItem("virgoArray", JSON.stringify(starData));
+    localStorage.setItem("scorpioArray", JSON.stringify(starData));
 
     // Clear the textarea
     ideaText.value = '';
