@@ -1,3 +1,8 @@
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -23,6 +28,7 @@ p {
 }
 
 h2 {
+  line-height: 65px;
   font-family: "Atma", serif;
   font-size: 40px;
   color: #57467B;
@@ -102,7 +108,8 @@ img {
   top: 50%;
 }
 
-.leftArrow, .rightArrow{
+.leftArrow,
+.rightArrow {
   width: 34px;
   height: 34px;
   fill: black;
