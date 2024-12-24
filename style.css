@@ -48,6 +48,7 @@ canvas {
 }
 
 .intro {
+  z-index: 2;
   position: absolute;
   top: 20%;
   width: 1200px;
