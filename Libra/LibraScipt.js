@@ -1,4 +1,3 @@
-localStorage.clear();
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
@@ -40,31 +39,21 @@ let offsetX, offsetY, pos1, pos2;
 
 let soundArray = [a6, b6, c6, d6, e6, f6, g6];
 
-let starData = localStorage.getItem('sagittariusArray');
+let starData = localStorage.getItem('libraArray');
 
 function creatingStarData() {
     if (starData) {
         starData = JSON.parse(starData);
     } else {
         starData = [
-            { cx: 1000, cy: 620, colored: false, color: 'gray', text: '' },
-            { cx: 850, cy: 520, colored: false, color: 'gray', text: '' },
-            { cx: 720, cy: 520, colored: false, color: 'gray', text: '' },
-            { cx: 660, cy: 600, colored: false, color: 'gray', text: '' },
-            { cx: 710, cy: 680, colored: false, color: 'gray', text: '' },
-            { cx: 570, cy: 480, colored: false, color: 'gray', text: '' },
-            { cx: 500, cy: 540, colored: false, color: 'gray', text: '' }, 
-            { cx: 800, cy: 380, colored: false, color: 'gray', text: '' },
-            { cx: 720, cy: 300, colored: false, color: 'gray', text: '' },
-            { cx: 760, cy: 250, colored: false, color: 'gray', text: '' },
-            { cx: 800, cy: 120, colored: false, color: 'gray', text: '' },
-            { cx: 640, cy: 30, colored: false, color: 'gray', text: '' },
-            { cx: 270, cy: 100, colored: false, color: 'gray', text: '' },
-            { cx: 200, cy: 240, colored: false, color: 'gray', text: '' },
-            { cx: 350, cy: 240, colored: false, color: 'gray', text: '' },
-            { cx: 840, cy: 330, colored: false, color: 'gray', text: '' },
-            { cx: 1000, cy: 240, colored: false, color: 'gray', text: '' },
-            { cx: 1040, cy: 330, colored: false, color: 'gray', text: '', animated: false },
+            { cx: 460, cy: 600, colored: false, color: 'gray', text: '' },
+            { cx: 510, cy: 520, colored: false, color: 'gray', text: '' },
+            { cx: 780, cy: 480, colored: false, color: 'gray', text: '' },
+            { cx: 850, cy: 350, colored: false, color: 'gray', text: '' },
+            { cx: 710, cy: 240, colored: false, color: 'gray', text: '' },
+            { cx: 550, cy: 300, colored: false, color: 'gray', text: '' },
+            { cx: 380, cy: 320, colored: false, color: 'gray', text: '' }, 
+            { cx: 350, cy: 260, colored: false, color: 'gray', text: '', animated: false },
           ];
           
     }
@@ -201,17 +190,12 @@ function animateLines() {
     const connectionGroups = [
         // Group 1: Star 0 → Star 1 → Star 2
         [{ from: 0, to: 1 }],
-        [{ from: 1, to: 2 }, { from: 1, to: 7 }],
-        // Group 3: Sequential branches
-        [{ from: 2, to: 3 }, { from: 2, to: 5 }],
-        [{ from: 3, to: 4 }, { from: 5, to: 6 },],
-        [{ from: 7, to: 8 }, { from: 7, to: 15 }],
-        [{ from: 8, to: 9 }, { from: 15, to: 9 }, { from: 15, to: 16 }],
-        [{ from: 9, to: 10 }, { from: 15, to: 16 }],
-        [{ from: 10, to: 11 }, { from: 16, to: 17 }],
-        [{ from: 11, to: 12 }],
-        [{ from: 12, to: 13 }],
-        [{ from: 12, to: 14 }],
+        [{ from: 1, to: 2 }],
+        [{ from: 2, to: 3 }],
+        [{from: 3, to: 4 }],
+        [{ from: 4, to: 5 }, { from: 4, to: 2 }],
+        [{ from: 5, to: 6 }],
+        [{ from: 6, to: 7 }]
     ];
 
     let groupIndex = 0;
@@ -386,7 +370,7 @@ saveButton.addEventListener('click', () => {
 
     starData[currentStarIndex].text = ideaText.value
     // Save the idea in localStorage with the currentStarIndex as the key
-    localStorage.setItem("sagittariusArray", JSON.stringify(starData));
+    localStorage.setItem("libraArray", JSON.stringify(starData));
 
     // Clear the textarea
     ideaText.value = '';
