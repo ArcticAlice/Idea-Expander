@@ -39,18 +39,18 @@ let offsetX, offsetY, pos1, pos2;
 
 let soundArray = [a6, b6, c6, d6, e6, f6, g6];
 
-let starData = localStorage.getItem('cancerArray');
+let starData = localStorage.getItem('ariesArray');
 
 function creatingStarData() {
     if (starData) {
         starData = JSON.parse(starData);
     } else {
         starData = [
-            { cx: 600, cy: 50, colored: false, color: 'gray', text: '' },
-            { cx: 620, cy: 300, colored: false, color: 'gray', text: '' },
-            { cx: 610, cy: 450, colored: false, color: 'gray', text: '' }, 
-            { cx: 400, cy: 600, colored: false, color: 'gray', text: '' },
-            { cx: 750, cy: 670, colored: false, color: 'gray', text: '', animated: false },
+            { cx: 200, cy: 400, colored: false, color: 'gray', text: '' },
+            { cx: 320, cy: 320, colored: false, color: 'gray', text: '' },
+            { cx: 720, cy: 280, colored: false, color: 'gray', text: '' }, 
+            { cx: 920, cy: 400, colored: false, color: 'gray', text: '' },
+            { cx: 1000, cy: 500, colored: false, color: 'gray', text: '', animated: false },
           ];
           
     }
@@ -188,7 +188,8 @@ function animateLines() {
         // Group 1: Star 0 → Star 1 → Star 2
         [{ from: 0, to: 1 }],
         [{ from: 1, to: 2 }],
-        [{ from: 2, to: 3 }, { from: 2, to: 4 }],
+        [{ from: 2, to: 3 }], 
+        [{ from: 3, to: 4 }]
     ];
 
     let groupIndex = 0;
@@ -200,7 +201,7 @@ function animateLines() {
     function animateGroup(group, onComplete) {
         let connectionIndex = 0;
         let progress = 0;
-        const speed = 0.05; // Animation speed
+        const speed = 0.02; // Animation speed
 
         function drawLineStep() {
             const connection = group[connectionIndex];
@@ -363,7 +364,7 @@ saveButton.addEventListener('click', () => {
 
     starData[currentStarIndex].text = ideaText.value
     // Save the idea in localStorage with the currentStarIndex as the key
-    localStorage.setItem("cancerArray", JSON.stringify(starData));
+    localStorage.setItem("ariesArray", JSON.stringify(starData));
 
     // Clear the textarea
     ideaText.value = '';
