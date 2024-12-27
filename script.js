@@ -127,7 +127,6 @@ class StarClass {
 }
 
 
-
 var starArrays = [];
 
 for (var i = 0; i < 125; i++) {

@@ -201,7 +201,7 @@ function animateLines() {
     function animateGroup(group, onComplete) {
         let connectionIndex = 0;
         let progress = 0;
-        const speed = 0.02; // Animation speed
+        const speed = .06; // Animation speed
 
         function drawLineStep() {
             const connection = group[connectionIndex];

@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration-line: none;
+}
+
 body {
   height: auto;
   background: white;

@@ -39,7 +39,7 @@ let offsetX, offsetY, pos1, pos2;
 
 let soundArray = [a6, b6, c6, d6, e6, f6, g6];
 
-let starData = localStorage.getItem('ariesArray');
+let starData = localStorage.getItem('aquariusArray');
 
 function creatingStarData() {
     if (starData) {
@@ -215,7 +215,7 @@ function animateLines() {
     function animateGroup(group, onComplete) {
         let connectionIndex = 0;
         let progress = 0;
-        const speed = 0.06; // Animation speed
+        const speed = 0.07; // Animation speed
 
         function drawLineStep() {
             const connection = group[connectionIndex];
@@ -378,7 +378,7 @@ saveButton.addEventListener('click', () => {
 
     starData[currentStarIndex].text = ideaText.value
     // Save the idea in localStorage with the currentStarIndex as the key
-    localStorage.setItem("ariesArray", JSON.stringify(starData));
+    localStorage.setItem("aquariusArray", JSON.stringify(starData));
 
     // Clear the textarea
     ideaText.value = '';
